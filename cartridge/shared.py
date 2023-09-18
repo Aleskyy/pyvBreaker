@@ -1,3 +1,6 @@
+import random
+
+
 screen = None
 blocks_pop = None
 
@@ -11,4 +14,5 @@ PLAYER_SPEED = 10
 # ball-related
 BALL_INIT_POS = 480, 277
 BALL_SIZE = 22
-BALL_SPEED = 5
+RANDOM_DIR = random.uniform(-5.0, 5.0)
+

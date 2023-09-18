@@ -29,9 +29,49 @@ def controls_sys(entities, components):
         if ctrl['left']:
             ent['speed'] = -shared.PLAYER_SPEED
             
+        if not (ctrl['left'] or ctrl['right']):
+            ent['speed'] = 0.0
             
 def physics_sys(entities, components):
-    true = True            
+    
+    ####################PLAYER MOVEMENT
+    player = pyv.find_by_archetype('player')[0]
+    pv = player['speed']
+    pp = player['body'].topleft
+    player['body'].left = pp[0]+pv
+    if(player['body'][0]>900 or player['body'][0]<0):
+         player['body'].left = pp[0]
+         
+    ###################BALL MOVEMENT
+    ball = pyv.find_by_archetype('ball')[0]
+    bv = ball['speed']
+    bp = ball['body'].topleft
+    print(ball)
+
+    ball['body'].left = bp[0] + shared.RANDOM_DIR
+    ball['body'].top = bp[1]+bv
+
+    if(ball['body'][0]>900 or ball['body'][0]<-0):
+        shared.RANDOM_DIR *= -1.05
+    if(ball['body'][1]<0 or ball['body'][1]>720):
+        pyv.vars.gameover = True
+        print('lose')
+    #######################Collision
+    
+    if player['body'].colliderect(ball['body']):
+        ball['body'].top = bp[1] + bv
+        ball['speed'] *= -1.05
+        shared.PLAYER_SPEED *= 1.05
+
+    #######################Collision block
+    blocks = pyv.find_by_archetype('block')
+    for block in blocks:
+        if(ball['body'].colliderect(block['body'])):
+            pyv.delete_entity(block)
+            ball['speed'] *= -1.05
+            ball['body'].top = bp[1]+bv
+            
+
 
 def rendering_sys(entities, components):
     """
