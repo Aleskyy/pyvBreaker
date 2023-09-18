@@ -12,6 +12,8 @@ __all__ = [
     'rendering_sys',
     'gamectrl_sys'
 ]
+def interpolate_color(x, y) -> tuple:
+    return 150, (x * 0.27) % 256, (y * 1.22) % 256
 
 def controls_sys(entities, components):
     pg = pyv.pygame
@@ -46,8 +48,6 @@ def physics_sys(entities, components):
     ball = pyv.find_by_archetype('ball')[0]
     bv = ball['speed']
     bp = ball['body'].topleft
-    print(ball)
-
     ball['body'].left = bp[0] + shared.RANDOM_DIR
     ball['body'].top = bp[1]+bv
 
@@ -87,7 +87,7 @@ def rendering_sys(entities, components):
     pyv.draw_rect(scr, 'white', pl_ent['body'])
     pyv.draw_rect(scr, 'blue', ball['body'])
     for b in li_blocks:
-        pyv.draw_rect(scr, 'purple', b['body'])
+        pyv.draw_rect(scr, interpolate_color(b['body'][0], b['body'][1]), b['body'])
         
         
 def gamectrl_sys(entities, components):

@@ -11,7 +11,7 @@ def init_game(vmst=None):
     pyv.init()
     screen = pyv.get_surface() 
     shared.screen = screen
-    pyv.init(wcaption='Néant')
+    pyv.init(wcaption='Pyv Breaker')
     pyv.define_archetype('player', (
         'speed', 'controls', 'body'
     ))
