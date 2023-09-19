@@ -46,30 +46,31 @@ def physics_sys(entities, components):
          
     ###################BALL MOVEMENT
     ball = pyv.find_by_archetype('ball')[0]
-    bv = ball['speed']
+    speed_Y = ball['speed_Y']
     bp = ball['body'].topleft
-    ball['body'].left = bp[0] + shared.RANDOM_DIR
-    ball['body'].top = bp[1]+bv
+    ball['body'].left = bp[0] + ball['speed_X']
+    ball['body'].top = bp[1]+speed_Y
 
-    if(ball['body'][0]>900 or ball['body'][0]<-0):
-        shared.RANDOM_DIR *= -1.05
+    if(ball['body'][0]>910 or ball['body'][0]<1):
+        ball['speed_X'] *= -1.05
     if(ball['body'][1]<0 or ball['body'][1]>720):
         pyv.vars.gameover = True
         print('lose')
     #######################Collision
     
     if player['body'].colliderect(ball['body']):
-        ball['body'].top = bp[1] + bv
-        ball['speed'] *= -1.05
-        shared.PLAYER_SPEED *= 1.05
+        ball['body'].top = bp[1] + speed_Y
+        ball['speed_Y'] *= -1.05
+        pv *= 1.05
 
     #######################Collision block
+    print(ball)
     blocks = pyv.find_by_archetype('block')
     for block in blocks:
         if(ball['body'].colliderect(block['body'])):
             pyv.delete_entity(block)
-            ball['speed'] *= -1.05
-            ball['body'].top = bp[1]+bv
+            ball['speed_Y'] *= -1.05
+            ball['body'].top = bp[1]+speed_Y
             
 
 
